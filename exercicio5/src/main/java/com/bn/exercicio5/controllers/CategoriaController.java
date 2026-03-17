@@ -19,22 +19,8 @@ public class CategoriaController {
 
     @GetMapping
     public ResponseEntity<List<CategoriaModel>> findAll(){
-        List<CategoriaModel> requeste = categoriaService.findAll();
-        return ResponseEntity.ok().body(requeste);
-    }
-
-    @PostMapping
-    public ResponseEntity<CategoriaModel> criarCategoria(@RequestBody CategoriaModel categoriaModel){
-        CategoriaModel requeste = categoriaService.criarCategoria(categoriaModel);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
-                .path("/{id}").buildAndExpand(categoriaModel.getId()).toUri();
-        return ResponseEntity.created(uri).body(requeste);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletarCategoria(@PathVariable Long id){
-        categoriaService.deletarCategoria(id);
-        return ResponseEntity.noContent().build();
+        List<CategoriaModel> categoria = categoriaService.findAll();
+        return ResponseEntity.ok().body(categoria);
     }
 
     @GetMapping("/{id}")
@@ -42,9 +28,26 @@ public class CategoriaController {
         return categoriaService.buscarCategoriaPorId(id);
     }
 
+    @PostMapping
+    public ResponseEntity<CategoriaModel> criarCategoria(@RequestBody CategoriaModel categoriaModel){
+        CategoriaModel categoriaCriada = categoriaService.criarCategoria(categoriaModel);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri()
+                .path("/{id}").buildAndExpand(categoriaModel.getId()).toUri();
+        return ResponseEntity.created(uri).body(categoriaCriada);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deletarCategoria(@PathVariable Long id){
+        categoriaService.deletarCategoria(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/{id}")
-    public CategoriaModel atualizarCategoria(@PathVariable Long id, CategoriaModel categoriaModel){
-        return categoriaService.atualizarCategoria(id, categoriaModel);
+    public ResponseEntity<CategoriaModel> atualizarCategoria
+            (@PathVariable Long id, @RequestBody CategoriaModel categoriaModel){
+        CategoriaModel categoriaAtualizada = categoriaService.atualizarCategoria(id, categoriaModel);
+        return ResponseEntity.ok(categoriaAtualizada);
     }
 
 }
