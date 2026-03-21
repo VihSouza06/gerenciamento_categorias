@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/categorias")
@@ -19,13 +20,14 @@ public class CategoriaController {
 
     @GetMapping
     public ResponseEntity<List<CategoriaModel>> findAll(){
-        List<CategoriaModel> categoria = categoriaService.findAll();
-        return ResponseEntity.ok().body(categoria);
+        List<CategoriaModel> categorias = categoriaService.findAll();
+        return ResponseEntity.ok().body(categorias);
     }
 
     @GetMapping("/{id}")
-    public CategoriaModel buscarCategoriaPorId(@PathVariable Long id){
-        return categoriaService.buscarCategoriaPorId(id);
+    public ResponseEntity<CategoriaModel> buscarCategoriaPorId(@PathVariable Long id){
+        CategoriaModel categoria = categoriaService.buscarCategoriaPorId(id);
+        return ResponseEntity.ok(categoria);
     }
 
     @PostMapping
@@ -35,7 +37,6 @@ public class CategoriaController {
                 .path("/{id}").buildAndExpand(categoriaModel.getId()).toUri();
         return ResponseEntity.created(uri).body(categoriaCriada);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletarCategoria(@PathVariable Long id){

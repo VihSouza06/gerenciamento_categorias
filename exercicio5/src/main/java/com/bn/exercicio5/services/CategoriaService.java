@@ -2,7 +2,6 @@ package com.bn.exercicio5.services;
 
 import com.bn.exercicio5.models.CategoriaModel;
 import com.bn.exercicio5.repositories.CategoriaRepository;
-import jakarta.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +30,11 @@ public class CategoriaService {
     }
 
     public CategoriaModel atualizarCategoria(Long id, CategoriaModel categoriaModel){
-        CategoriaModel newCategoriaModel = categoriaRepository.findById(id).get();
-        return categoriaRepository.save(categoriaModel);
+        CategoriaModel novaCategoria = categoriaRepository.findById(id).get();
+        novaCategoria.setNome(categoriaModel.getNome());
+        novaCategoria.setDescricao(categoriaModel.getDescricao());
+        return categoriaRepository.save(novaCategoria);
+
     }
 
 }
